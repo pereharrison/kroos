@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.20.0/dist/axios.min.js"></script>
+
+    <title>Kroos</title>
+    <style>
+      table {
+        border: 1px solid black;
+      }
+      th {
+        border: 1px solid black;
+      }
+      td {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div><span>Kroos</span> is the language of the future.</div>
+    <button>
+      <a href="./addword.html" title="Add new word"
+        ><i class="fa-solid fa-plus"></i
+      ></a>
+    </button>
+    <div>
+      <table>
+        <tr>
+          <th>Kroos</th>
+          <th>English</th>
+          <th>Meaning</th>
+        </tr>
+
+        <tbody id="word-body">
+
+        </tbody>
+      </table>
+
+      <p id="message"></p>
+    </div>
+
+    <script>
+      const getWords = async () => {
+        // const kroos = document.getElementById("kroos");
+        // const english = document.getElementById("english");
+        // const meaning = document.getElementById("meaning");
+        const wordBody = document.getElementById("word-body")
+        const message = document.getElementById("message");
+
+        try {
+          const res = await axios.get("http://localhost:4000/word/all-words");
+          console.log(res.data);
+
+          // manipulate
+         res.data.data.forEach((word) => {
+            wordBody.innerHTML += `
+            <tr>
+                <td>${word.kroos}</td>
+                <td>${word.english}</td>
+                <td>${word.meaning}</td>
+            </tr>
+            `
+         });
+        } catch (error) {
+          console.error;
+          message.textContent = error.message;
+        }
+      };
+
+      getWords()
+    </script>
+  </body>
+</html>

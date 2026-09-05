@@ -1,0 +1,19 @@
+{
+  "name": "krood",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.20.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongodb": "^7.6.0",
+    "mongoose": "^9.9.5",
+    "nodemon": "^3.1.14"
+  }
+}
