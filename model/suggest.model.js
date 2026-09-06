@@ -1,7 +1,12 @@
 const mongoose = require("mongoose")
 
 const SuggestWordSchema = new mongoose.Schema({
-    suggestion: {
+    kroosSuggestion: {
+        type: String,
+        trim: true,
+        unique: true
+    },
+    englishSuggestion: {
         type: String,
         trim: true,
         unique: true

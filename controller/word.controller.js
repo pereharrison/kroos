@@ -58,14 +58,21 @@ const allWords = async (req, res) => {
 };
 
 const suggestWord = async (req, res) => {
-  const { suggestion } = req.body;
-  if (!suggestion) {
+  const { kroosSuggestion, englishSuggestion } = req.body;
+  if (!kroosSuggestion || englishSuggestion) {
     return res.status(400).json({
-      message: "Suggestion is required",
+      message: "Suggestion fields are required",
     });
   }
 
-  const createSuggestion = await Suggest.create({ suggestion });
+  const checkSuggestion = await Suggest.findOne({englishSuggestion})
+  if(checkSuggestion){
+    return res.status(400).json({
+      message: "English word has been suggested already!"
+    }) 
+  }
+
+  const createSuggestion = await Suggest.create({ kroosSuggestion, englishSuggestion });
   if (!createSuggestion) {
     return res.status(400).json({
       message: "Could not create suggestion",
@@ -96,4 +103,67 @@ const seeSuggestions = async (req, res) => {
     });
   }
 };
-module.exports = { AddWord, allWords, suggestWord, seeSuggestions };
+
+const seeSpecificWord = async (req, res) => {
+  try {
+    const { english } = req.params;
+    if (!english) {
+      return res.status(400).json({
+        message: "English word is required!",
+      });
+    }
+
+    const findWord = await PostWord.findOne({ english });
+    if (!findWord) {
+      return res.status(404).json({
+        message: "could not find word",
+      });
+    }
+
+    res.status(200).json({
+      message: "successful",
+      data: findWord,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: error.message || error.response,
+    });
+  }
+};
+
+const seeWordDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        message: "id is required",
+      });
+    }
+
+    const word = await PostWord.findById(id);
+
+    if (!word) {
+      return res.status(404).json({
+        message: "Word not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Word found",
+      data: word,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+};
+module.exports = {
+  AddWord,
+  allWords,
+  suggestWord,
+  seeSuggestions,
+  seeSpecificWord,
+  seeWordDetails
+};
