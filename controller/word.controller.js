@@ -58,8 +58,8 @@ const allWords = async (req, res) => {
 };
 
 const suggestWord = async (req, res) => {
-  const { kroosSuggestion, englishSuggestion } = req.body;
-  if (!kroosSuggestion || !englishSuggestion) {
+  const { kroosSuggestion, englishSuggestion, contactSuggestor, contactPlatform } = req.body;
+  if (!kroosSuggestion || !englishSuggestion || !contactSuggestor) {
     return res.status(400).json({
       message: "Suggestion fields are required",
     });
@@ -72,10 +72,10 @@ const suggestWord = async (req, res) => {
     }) 
   }
 
-  const createSuggestion = await Suggest.create({ kroosSuggestion, englishSuggestion });
+  const createSuggestion = await Suggest.create({ kroosSuggestion, englishSuggestion, contactSuggestor, contactPlatform });
   if (!createSuggestion) {
     return res.status(400).json({
-      message: "Could not create suggestion",
+      message: "Could not create suggestion" ,
     });
   }
 
@@ -159,6 +159,7 @@ const seeWordDetails = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   AddWord,
   allWords,
