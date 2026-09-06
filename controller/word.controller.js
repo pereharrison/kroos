@@ -59,7 +59,7 @@ const allWords = async (req, res) => {
 
 const suggestWord = async (req, res) => {
   const { kroosSuggestion, englishSuggestion } = req.body;
-  if (!kroosSuggestion || englishSuggestion) {
+  if (!kroosSuggestion || !englishSuggestion) {
     return res.status(400).json({
       message: "Suggestion fields are required",
     });
